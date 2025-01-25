@@ -46,42 +46,64 @@ To achieve the goal of maximizing accuracy in detecting heart disease, two main 
 </p>
 
 1. Dollmaker Optimization Algorithm (DOA)
-    <p style="text-align: justify;">
+
     DOA is a metaheuristic optimization algorithm inspired by the creativity of dollmakers. This algorithm adopts exploration and exploitation mechanisms in the search space to find optimal solutions adaptively. Here are the steps of DOA:
 
     1.1 Population Initialization:
     A population (**P**) of a certain size (**N**) is initialized. Each individual in the population represents a candidate solution, where the candidate solution is a vector of hyperparameters *C* (regularization) and *$\gamma$* (kernel coefficient). The initialization formula for each individual is given as follows:  
+    
     $$x_{i,d} = lb_d + r \cdot (ub_d - lb_d)$$
+    
     where:
+
     - $x_{i,d}$ = initial position of individual $i$ on dimension $d$,
+
     - $lb_d, ub_d$ = lower and upper bounds for the dimension $d$,
+
     - $r$ = random number between 0 and 1. 
    
     for svm tuning:
+
     - $C \in [0.1, 100] $,
+
     - $\gamma \in [0.01, 0.1]$.
    
     1.2 Exploration:
     Exploration is carried out to find new solutions by using the adaptation equation:
+    
     $$x{^{P1}_{i,d}} = x_{i,d} + r \cdot (P_d - I \cdot x_{i,d})$$
+    
     $$X_i = \begin{cases} X_i^{P_1}, & F_i^{P_1} \leq F_i, \\ X_i, & \text{else} \end{cases}$$
+    
     where:
+
     - $P$ = The selected doll-making pattern,
+
     - $P_d$ = The selected doll-making pattern on dimension $d$,
+
     - $X{^{P1}_i}$ = The New position for the $i$ individuals based on first phase of DOA,
+
     - $F{^{P1}_i}$ = objective function value,
+
     - $I$ = randomly selected number, taking values of 1 or 2.
    
     1.3 Exploitation:
     Exploitation is done to improve the best candidate solutions through local search around the optimal solution. This ensures the reinforcement of the best solution without losing focus on the best areas in the search space.
+    
     $$x{^{P2}_{i,d}} = x_{i,d} + (1 - 2r_{i,d}) \cdot (\frac{ub_j - lb_j}{t})$$
+    
     $$X_i = \begin{cases} X_i^{P_2}, & F_i^{P_2} \leq F_i, \\ X_i, & \text{else} \end{cases}$$
+    
     where:
+
     - $X{^{P2}_i}$ = The New position for the $i$ individuals based on second phase of DOA,
+
     - $t$ = Iteration Counter
    
     1.4 Fitness Evaluation: The fitness ($f$) of each individual is calculated based on the performance of the SVM model trained using the hyperparameters $C$ and $\gamma$. In this project, fitness is defined as the accuracy of the model:
+    
     $$f = (\frac{TP + TN}{TP + TN + FP + FN})$$
+    
     where TP, TN, FP, and FN are True Positives, True Negatives, False Positives, and False Negatives.
 
     1.5 Adaptive Iteration: The population is updated iteratively until the maximum number of iterations is reached. At each iteration, the best individual ($P_{best}$) is saved and used to generate new solutions [3].
@@ -94,30 +116,93 @@ To achieve the goal of maximizing accuracy in detecting heart disease, two main 
     2.1 Objective Function
     
     The SVM classifier solves the following optimization problem:
+    
     $$\min_{\mathbf{w}, b, \xi} \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^{n} \xi_i$$
+    
     Subject to:
+    
     $$y_i (\mathbf{w}^\top \phi(\mathbf{x}_i) + b) \geq 1 - \xi_i, \quad \xi_i \geq 0, \quad \forall i$$
+    
     where:
+
     - $w$ = weight vector,
+
     - $b$ = bias term,
+
     - $\xi_i$ = slack variables for soft margin,
+
     - $C$ = regularization parameter that controls the trade-off between margin width and classification error.
     
    2.2 Kernel Function: Radial Basis Function (RBF)
     
     The RBF kernel is defined as:
+    
     $$K(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \|\mathbf{x}_i - \mathbf{x}_j\|^2)$$
+    
     where:
+
     - $\gamma > 0$: kernel coefficient that controls the influence of a single training example.
    
     2.3 Decision Function
     
     The decision boundary is expressed as:
+    
     $$f(\mathbf{x}) = \text{sign}\left(\sum_{i=1}^{n} \alpha_i y_i K(\mathbf{x}_i, \mathbf{x}) + b\right)$$
+    
     where:
+
     - $\alpha_i$ = Lagrange multipliers,
+
     - $y_i$ = class label (+1, -1),
+
     - $K(\mathbf{x}_i, \mathbf{x})$ = kernel function [4]. 
+
+3. Integration of DOA and SVM
+    
+    After understanding each component, here are the integration steps to maximize model accuracy:
+
+    Implementation Stages:
+
+    3.1 Parameter Initialization
+    
+    - DOA is used to initialize the parameter population $C$ and $\gamma$.
+    - Each member of the population is evaluated using SVM on the training data.
+   
+    3.2 Fitness Function
+
+    - The accuracy of the SVM model is calculated as a fitness metric:
+   
+    $$f = \frac{TP + TN}{TP + TN + FP + FN}$$
+
+    3.3 DOA Iteration
+
+    The population is updated through exploration and exploitation, with the parameters $C$ and $\gamma$ adjusted until the maximum iteration is reached.
+
+    3.4 Optimal Model
+
+   The best parameters $C$ and $\gamma$ are used to retrain the SVM model with all training data.
+
+   3.5 Final Evaluation
+
+   The model is tested on test data to measure performance using the metrics:
+
+   - Accuracy :
+
+      $$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$$
+
+   - Precision :
+
+      $$Precision = \frac{TP}{TP + FP}$$
+
+   - Recall :
+
+      $$Recall = \frac{TP}{TP + FN}$$
+
+   - F1-Score :
+
+      $$F1-Score = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}$$
+
+## 
 
 
 ## Reference
