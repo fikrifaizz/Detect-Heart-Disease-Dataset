@@ -1,4 +1,4 @@
-# Implementation of Dollmaker Optimization Algorithm in Hyperparameter Tuning Support Vector Machine for Liver Disease Detection
+# Implementation of Dollmaker Optimization Algorithm in Hyperparameter Tuning Support Vector Machine for Heart Disease Detection
 
 |                      | Information                                                                                                                          |
 |----------------------|--------------------------------------------------------------------------------------------------------------------------------------|
