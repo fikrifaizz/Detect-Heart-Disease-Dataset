@@ -90,9 +90,9 @@ To achieve the goal of maximizing accuracy in detecting heart disease, two main 
     1.3 Exploitation:
     Exploitation is done to improve the best candidate solutions through local search around the optimal solution. This ensures the reinforcement of the best solution without losing focus on the best areas in the search space.
     
-    $$x{^{P2}_{i,d}} = x_{i,d} + (1 - 2r_{i,d}) \cdot (\frac{ub_j - lb_j}{t})$$
-    
-    $$X_i = \begin{cases} X_i^{P_2}, & F_i^{P_2} \leq F_i, \\ X_i, & \text{else} \end{cases}$$
+    $x{^{P2}_{i,d}} = x_{i,d} + (1 - 2r_{i,d}) \cdot (\frac{ub_j - lb_j}{t})$
+
+    $X_i = \begin{cases} X_i^{P_2}, & F_i^{P_2} \leq F_i, \\ X_i, & \text{else} \end{cases}$
     
     where:
 
@@ -202,7 +202,8 @@ To achieve the goal of maximizing accuracy in detecting heart disease, two main 
 
       $$F1-Score = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}$$
 
-## 
+## Data Understanding
+
 
 
 ## Reference
