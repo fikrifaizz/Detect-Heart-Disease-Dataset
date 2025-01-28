@@ -71,10 +71,10 @@ To achieve the goal of maximizing accuracy in detecting heart disease, two main 
     1.2 Exploration:
     Exploration is carried out to find new solutions by using the adaptation equation:
     
-    $$x{^{P1}_{i,d}} = x_{i,d} + r \cdot (P_d - I \cdot x_{i,d})$$
-    
-    $$X_i = \begin{cases} X_i^{P_1}, & F_i^{P_1} \leq F_i, \\ X_i, & \text{else} \end{cases}$$
-    
+    <img src="https://github.com/user-attachments/assets/fe0b4891-5b3d-4505-a4a3-b3a0e5fe2818" alt="Exploration Model" title="Exploration Model">
+ 
+    <img src="https://github.com/user-attachments/assets/b03b0a92-aea3-480b-b6b5-b963371394c1" alt="Exploration Rules" title="Exploration Rules">
+
     where:
 
     - $P$ = The selected doll-making pattern,
@@ -90,10 +90,10 @@ To achieve the goal of maximizing accuracy in detecting heart disease, two main 
     1.3 Exploitation:
     Exploitation is done to improve the best candidate solutions through local search around the optimal solution. This ensures the reinforcement of the best solution without losing focus on the best areas in the search space.
     
-    $$x{^{P2}_{i,d}} = x_{i,d} + (1 - 2r_{i,d}) \cdot (\frac{ub_j - lb_j}{t})$$
+    <img src="https://github.com/user-attachments/assets/8897fd5e-700d-4b39-a971-861b4d3e42e6" alt="Exploitation Model" title="Exploitation Model">
     
-    $$X_i = \begin{cases} X_i^{P_2}, & F_i^{P_2} \leq F_i, \\ X_i, & \text{else} \end{cases}$$
-    
+    <img src="https://github.com/user-attachments/assets/35e5fa56-d46a-4958-8daa-858f0b82c707" alt="Exploitation Rules" title="Exploitation Rules">
+
     where:
 
     - $X{^{P2}_i}$ = The New position for the $i$ individuals based on second phase of DOA,
@@ -423,9 +423,9 @@ Performance Metrics:
    - F1 Score: 93.15%
 
 Final Hyperparameters:
-- $C$: 48.41
+- $C$: 20.2970
 
-- Gamma: 0.0381
+- Gamma: 0.0660
 
 Advantages:
 
