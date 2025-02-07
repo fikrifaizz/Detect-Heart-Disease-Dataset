@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report, accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, ConfusionMatrixDisplay
 from joblib import dump, load
@@ -16,6 +17,7 @@ class DOA_SVM:
         self.y_test = y_test
         self.population = self.initialize_population()
         self.fitness = self.fitness_function(self.population)
+        self.fitness_history = []
         self.best_pop, self.best_member, self.best_fitness = self.best_population()
 
     def initialize_population(self):
@@ -102,7 +104,7 @@ class DOA_SVM:
     def run(self):
         print(f"Initialization: Best Fitness = {self.best_fitness}")
         print(f"Best C = {self.best_member[0]:.4f}, Best Gamma = {self.best_member[1]:.4f}")
-
+        fitness_history, fitness_plot = [],[]
         for t in range(1, self.maksiter + 1):
             previous_population = self.population.copy()
             previous_fitness = self.fitness.copy()
@@ -119,14 +121,26 @@ class DOA_SVM:
                     self.population[i] = previous_population[i]
                     self.fitness[i] = previous_fitness[i]
             self.best_pop, self.best_member, self.best_fitness = self.best_population()
+            self.fitness_history.append(self.best_fitness)
+        fitness_plot.append(fitness_history)
         model = SVC(kernel='rbf', C=self.best_member[0], gamma=self.best_member[1])
         model.fit(self.X_train, self.y_train)
         y_pred = model.predict(self.X_test)
+        plt.figure(figsize=(8, 5))
+        plt.plot(range(1, len(self.fitness_history) + 1), self.fitness_history, marker='o', linestyle='-',
+                 color='orange', label="Best Fitness")
+        for i, fitness in enumerate(self.fitness_history):
+            plt.text(i + 1, fitness, f"{fitness:.4f}", fontsize=10, ha='right', va='bottom')
+        plt.xlabel("Iteration")
+        plt.ylabel("Best Fitness")
+        plt.title("Fitness Evolution Over Iterations")
+        plt.grid()
+        plt.legend()
+        plt.show()
         accuracy = accuracy_score(self.y_test, y_pred)
         f1 = f1_score(self.y_test, y_pred)
         precision = precision_score(self.y_test, y_pred)
         recall = recall_score(self.y_test, y_pred)
-
         print("\nFinal Evaluation:")
         print(f"Accuracy: {accuracy:.4f}")
         print(f"F1 Score: {f1:.4f}")
